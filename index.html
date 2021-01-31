@@ -10,6 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;500;700&display=swap"
         rel="stylesheet">
     <!-- Stylesheet -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" />
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -35,7 +37,7 @@
         </div>
 
 
-        <div class="booking-form">
+        <div  id="bookingsection" class="booking-form">
             <h3>Explore By Bus</h3>
 
             <div class="inputs">
@@ -44,7 +46,7 @@
                     <input class="inp-style" type="text" name="" placeholder="Dhaka">
                 </div>
                 <div class="input-group">
-                    <label" for="">From</label>
+                    <label" for="">To</label>
                     <input class="inp-style" type="text" name="" placeholder="Chittagone">
                 </div>
             </div>
@@ -63,19 +65,21 @@
                 <div class="input-group f-class">
                 <div>
                     <label for="">First Class ($150)</label>
-                    <input class="inp-style inp-width" type="number" name="">
                 </div>
-                <div class="plus-minus-btn">
-                    <p>+ -</p>
+                <div class="number-spinner input-group">
+                    <button id="case-decrement" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                    <input id="case-count" type="text" class="form-control text-center" value="0">
+                    <button id="case-increment" class="btn btn-default"><i class="fas fa-plus"></i></button>
                 </div>
             </div>
                 <div class="input-group f-class">
                     <div>
                         <label for="">Economy ($100)</label>
-                        <input class="inp-style inp-width" type="number" name="">
                     </div>
-                    <div class="plus-minus-btn">
-                        <p> <span>+</span> <span>-</span> </p>
+                    <div class="number-spinner input-group">
+                        <button id="case-decrease" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                        <input id="case-counter" type="text" class="form-control text-center" value="0">
+                        <button id="case-increase" class="btn btn-default"><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
 
@@ -86,7 +90,7 @@
                         <p>Subtotal</p>
                     </div>
                     <div class="right">
-                        <p>$500</p>
+                        <p id="total-price">$0</p>
                     </div>
                 </div>
 
@@ -95,7 +99,7 @@
                         <p>Charge 10% VAT</p>
                     </div>
                     <div class="right">
-                        <p>$50</p>
+                        <p id="total-amount">$0</p>
                     </div>
                 </div>
                 <hr>
@@ -104,13 +108,89 @@
                         <h4>Total</h4>
                     </div>
                     <div class="right">
-                        <p>$550</p>
+                        <p id="grand-total">$0</p>
                     </div>
                 </div>
             </div>
-            <button class="btn-style">Book Now</button>
+            <button id="book-now" class="btn-style">Book Now</button>
         </div>
     </main>
+    <script>
+        document.getElementById("case-increment").addEventListener("click", function(){
+            handleProductChange(true);
+         });
+         document.getElementById("case-decrement").addEventListener("click", function(){
+            handleProductChange(false);
+         });
+         function handleProductChange(isIncrement){
+            const caseInput = document.getElementById("case-count");
+            const caseCount = parseInt(caseInput.value);
+            let caseNewCount = caseCount;
+            if(isIncrement == true){
+               caseNewCount = caseCount + 1;
+            }
+            if(isIncrement == false && caseCount > 0){
+               caseNewCount = caseCount - 1;
+            }
+            caseInput.value = caseNewCount;
+            const casetotal = caseNewCount * 59;
+            //document.getElementById("case-total").innerText = '$' + casetotal;
+            calculateTotal();
+         };
+
+
+         document.getElementById("case-increase").addEventListener("click", function(){
+            handleProductChangeTop(true);
+         });
+         document.getElementById("case-decrease").addEventListener("click", function(){
+            handleProductChangeTop(false);
+         });
+         function handleProductChangeTop(isIncrease){
+            const caseInputTop = document.getElementById("case-counter");
+            const caseCountTop = parseInt(caseInputTop.value);
+            let caseNewCountTop = caseCountTop;
+            if(isIncrease == true){
+               caseNewCountTop = caseCountTop + 1;
+            }
+            if(isIncrease == false && caseCountTop > 0){
+               caseNewCountTop = caseCountTop - 1;
+            }
+            caseInputTop.value = caseNewCountTop;
+            const caseTotalTop = caseNewCountTop * 1219;
+            //document.getElementById("case-total-top").innerText = '$' + caseTotalTop;
+           calculateTotal();
+         };
+
+         function calculateTotal(){
+            const caseInputTop = document.getElementById("case-counter");
+            const caseCountTop = parseInt(caseInputTop.value);
+
+            const caseInput = document.getElementById("case-count");
+            const caseCount = parseInt(caseInput.value);
+
+            const totalPrice = caseCountTop * 150 + caseCount * 100;
+            document.getElementById("total-price").innerText = '$' + totalPrice;
+
+            const tax = totalPrice * .1;
+            document.getElementById("total-amount").innerText = '$' + tax;
+
+            const grandTotal = totalPrice + tax;
+            document.getElementById("grand-total").innerText = '$' + grandTotal;
+         }
+         const BookNowBtn = document.getElementById("book-now");
+        BookNowBtn.addEventListener("click", function () {
+
+            const Bookingsection = document.getElementById("bookingsection");
+            Bookingsection.style.display = "none";
+            alert('Thanks for booking');
+        
+        
+        })
+
+
+
+
+    </script>
 
     <!--Thank You-->
 </body>
